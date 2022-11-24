@@ -5,12 +5,13 @@ namespace Micro\Framework\Kernel\Boot;
 use Micro\Framework\Kernel\Configuration\ApplicationConfigurationFactoryInterface;
 use Micro\Framework\Kernel\Configuration\ApplicationConfigurationInterface;
 use Micro\Framework\Kernel\Configuration\DefaultApplicationConfigurationFactory;
-use Micro\Framework\Kernel\Configuration\Plugin\ConfigurableInterface;
+use Micro\Framework\Kernel\Configuration\Resolver\PluginConfigurationClassResolver;
+use Micro\Framework\Kernel\Plugin\ConfigurableInterface;
 use Micro\Framework\Kernel\Plugin\PluginBootLoaderInterface;
 
 class ConfigurationProviderBootLoader implements PluginBootLoaderInterface
 {
-    private readonly ApplicationConfigurationInterface $configuration;
+    private readonly ApplicationConfigurationInterface $applicationConfiguration;
 
     /**
      * @param array|ApplicationConfigurationInterface|ApplicationConfigurationFactoryInterface $config
@@ -29,7 +30,7 @@ class ConfigurationProviderBootLoader implements PluginBootLoaderInterface
             $applicationConfig = $applicationConfig->create();
         }
 
-        $this->configuration = $applicationConfig;
+        $this->applicationConfiguration = $applicationConfig;
     }
 
     /**
@@ -41,6 +42,17 @@ class ConfigurationProviderBootLoader implements PluginBootLoaderInterface
             return;
        }
 
-       $applicationPlugin->setConfiguration($this->configuration);
+       $applicationPlugin->setConfiguration(
+           $this->createPluginConfigurationClassResolver()
+                ->resolve($applicationPlugin->name())
+       );
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    protected function createPluginConfigurationClassResolver(): PluginConfigurationClassResolver
+    {
+        return new PluginConfigurationClassResolver($this->applicationConfiguration);
     }
 }

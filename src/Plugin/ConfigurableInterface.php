@@ -17,4 +17,9 @@ interface ConfigurableInterface
      * @return void
      */
     public function setConfiguration(PluginConfigurationInterface $pluginConfiguration): void;
+
+    /**
+     * @return string
+     */
+    public function name(): string;
 }

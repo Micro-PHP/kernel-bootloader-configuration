@@ -9,26 +9,26 @@ use Micro\Framework\Kernel\Configuration\PluginConfigurationInterface;
 class PluginConfigurationClassResolver
 {
     /**
-     * @param string $pluginClass
      * @param ApplicationConfigurationInterface $applicationConfiguration
      */
     public function __construct(
-        private readonly string $pluginClass,
         private readonly ApplicationConfigurationInterface $applicationConfiguration
     )
     {
     }
 
     /**
+     * @param string $pluginClass
+     *
      * @return PluginConfigurationInterface
      */
-    public function resolve(): PluginConfigurationInterface
+    public function resolve(string $pluginClass): PluginConfigurationInterface
     {
         $configClassDefault = PluginConfiguration::class;
         $configClasses      = [];
 
         foreach ($this->getPluginClassResolvers() as $resolver) {
-            $configClass = $resolver->resolve($this->pluginClass);
+            $configClass = $resolver->resolve($pluginClass);
 
             if(!class_exists($configClass)) {
                 continue;
