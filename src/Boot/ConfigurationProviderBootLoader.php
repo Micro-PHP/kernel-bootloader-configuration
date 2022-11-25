@@ -44,7 +44,7 @@ class ConfigurationProviderBootLoader implements PluginBootLoaderInterface
 
        $applicationPlugin->setConfiguration(
            $this->createPluginConfigurationClassResolver()
-                ->resolve($applicationPlugin->name())
+                ->resolve(get_class($applicationPlugin))
        );
     }
 

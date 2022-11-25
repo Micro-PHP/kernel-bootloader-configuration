@@ -2,7 +2,7 @@
     "name": "micro/kernel-boot-configuration",
     "description": "Micro Framework: Kernel Boot loader - component to provide plugin configuration",
     "type": "library",
-    "version": "1.1",
+    "version": "1.2",
     "require": {
         "micro/kernel": "^1"
     },
