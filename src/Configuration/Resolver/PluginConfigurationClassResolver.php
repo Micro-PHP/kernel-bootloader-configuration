@@ -26,10 +26,8 @@ class PluginConfigurationClassResolver
     {
         $configClassDefault = PluginConfiguration::class;
         $configClasses      = [];
-
         foreach ($this->getPluginClassResolvers() as $resolver) {
             $configClass = $resolver->resolve($pluginClass);
-
             if(!class_exists($configClass)) {
                 continue;
             }
@@ -41,7 +39,7 @@ class PluginConfigurationClassResolver
             throw new \RuntimeException(
                 sprintf(
                     'Too many configuration classes for Application plugin "%s". [%s]',
-                    $this->pluginClass,
+                    $pluginClass,
                     implode(", ", $configClasses)
                 )
             );
