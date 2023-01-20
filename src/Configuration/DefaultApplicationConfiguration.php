@@ -1,5 +1,14 @@
 <?php
 
+/*
+ *  This file is part of the Micro framework package.
+ *
+ *  (c) Stanislau Komar <kost@micro-php.net>
+ *
+ *  For the full copyright and license information, please view the LICENSE
+ *  file that was distributed with this source code.
+ */
+
 namespace Micro\Framework\Kernel\Configuration;
 
 use Micro\Framework\Kernel\Configuration\Exception\InvalidConfigurationException;
@@ -7,7 +16,11 @@ use Micro\Framework\Kernel\Configuration\Exception\InvalidConfigurationException
 class DefaultApplicationConfiguration implements ApplicationConfigurationInterface
 {
     private const BOOLEAN_TRUE = [
-        'true', 'on', '1', 'yes'
+        'true', 'on', '1', 'yes',
+    ];
+
+    private const BOOLEAN_FALSE = [
+        'false', 'off', '0', 'no',
     ];
 
     /**
@@ -20,43 +33,49 @@ class DefaultApplicationConfiguration implements ApplicationConfigurationInterfa
     /**
      * {@inheritDoc}
      */
-    public function get(string $key, $default = null, bool $nullable = true): mixed
+    public function get(string $key, mixed $default = null, bool $nullable = true): mixed
     {
-        if(is_bool($default)) {
-            return $this->getBooleanValue($key, $default);
+        if (\is_bool($default)) {
+            try {
+                return $this->getBooleanValue($key, $default);
+            } catch (\InvalidArgumentException $exception) {
+                throw new InvalidConfigurationException(sprintf('Configuration key "%s" can not be converted to boolean', $key), 0, $exception);
+            }
         }
 
         $value = $this->getValue($key, $default);
 
-        if($nullable === false && !$value && !is_numeric($value)) {
+        if (false === $nullable && !$value && !is_numeric($value)) {
             throw new InvalidConfigurationException(sprintf('Configuration key "%s" can not be NULL', $key));
         }
 
         return $value;
     }
 
-    /**
-     * @param string $key
-     * @param bool $default
-     *
-     * @return bool
-     */
     protected function getBooleanValue(string $key, bool $default): bool
     {
         $value = $this->getValue($key, $default);
-        if($value === null) {
+        if (\is_bool($value)) {
+            return $value;
+        }
+
+        if (null === $value) {
             return $default;
         }
 
-        return in_array(mb_strtolower($value), self::BOOLEAN_TRUE, true);
+        $value = mb_strtolower($value);
+
+        if (\in_array($value, self::BOOLEAN_TRUE, true)) {
+            return true;
+        }
+
+        if (\in_array($value, self::BOOLEAN_FALSE, true)) {
+            return false;
+        }
+
+        throw new \InvalidArgumentException('Value can not be converted to boolean.');
     }
 
-    /**
-     * @param string $key
-     * @param mixed $default
-     *
-     * @return mixed
-     */
     protected function getValue(string $key, mixed $default): mixed
     {
         return $this->configuration[$key] ?? $default;
