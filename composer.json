@@ -22,13 +22,11 @@
     },
     "autoload": {
         "psr-4": {
-            "Micro\\Framework\\Kernel\\": "src/"
-        }
-    },
-    "autoload-dev": {
-        "psr-4": {
-            "Micro\\Framework\\Kernel\\Test\\Unit\\": "tests/Unit"
-        }
+            "Micro\\Framework\\BootConfiguration\\": "/"
+        },
+        "exclude-from-classmap": [
+            "/Tests/"
+        ]
     },
     "config": {
         "allow-plugins": {
