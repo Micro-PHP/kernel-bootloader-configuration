@@ -15,10 +15,10 @@ use Micro\Framework\BootConfiguration\Configuration\ApplicationConfigurationInte
 use Micro\Framework\BootConfiguration\Configuration\PluginConfiguration;
 use Micro\Framework\BootConfiguration\Configuration\PluginConfigurationInterface;
 
-class PluginConfigurationClassResolver
+readonly class PluginConfigurationClassResolver
 {
     public function __construct(
-        private readonly ApplicationConfigurationInterface $applicationConfiguration
+        private ApplicationConfigurationInterface $applicationConfiguration
     ) {
     }
 

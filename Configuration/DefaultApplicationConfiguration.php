@@ -30,9 +30,6 @@ class DefaultApplicationConfiguration implements ApplicationConfigurationInterfa
     {
     }
 
-    /**
-     * {@inheritDoc}
-     */
     public function get(string $key, mixed $default = null, bool $nullable = true): mixed
     {
         if (\is_bool($default)) {

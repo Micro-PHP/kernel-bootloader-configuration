@@ -37,7 +37,7 @@ class ConfigurationProviderBootLoaderTest extends TestCase
         $this->assertEquals('OK', $plugin->getConfigRoutingKeyValue());
     }
 
-    public function dataProvider(): array
+    public static function dataProvider(): array
     {
         $cfgArr = [
             'APP_ENV' => 'test',

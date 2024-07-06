@@ -11,13 +11,14 @@
 
 namespace Micro\Framework\BootConfiguration\Configuration;
 
-class DefaultApplicationConfigurationFactory implements ApplicationConfigurationFactoryInterface
+readonly class DefaultApplicationConfigurationFactory implements ApplicationConfigurationFactoryInterface
 {
     /**
      * @param array<string, mixed> $configuration
      */
-    public function __construct(private readonly array $configuration)
-    {
+    public function __construct(
+        private array $configuration
+    ) {
     }
 
     public function create(): ApplicationConfigurationInterface

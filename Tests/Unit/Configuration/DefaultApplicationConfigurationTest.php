@@ -93,7 +93,7 @@ class DefaultApplicationConfigurationTest extends TestCase
         var_dump($this->configuration->get($key, $default, false));
     }
 
-    public function dataProviderExceptionalKeys()
+    public static function dataProviderExceptionalKeys(): array
     {
         return [
             ['BOOLEAN_INVALID', false],

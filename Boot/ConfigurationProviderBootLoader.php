@@ -18,9 +18,9 @@ use Micro\Framework\BootConfiguration\Configuration\Resolver\PluginConfiguration
 use Micro\Framework\BootConfiguration\Plugin\ConfigurableInterface;
 use Micro\Framework\Kernel\Plugin\PluginBootLoaderInterface;
 
-class ConfigurationProviderBootLoader implements PluginBootLoaderInterface
+readonly class ConfigurationProviderBootLoader implements PluginBootLoaderInterface
 {
-    private readonly ApplicationConfigurationInterface $applicationConfiguration;
+    private ApplicationConfigurationInterface $applicationConfiguration;
 
     /**
      * @param array<string|mixed>|ApplicationConfigurationInterface|ApplicationConfigurationFactoryInterface $config
@@ -37,11 +37,8 @@ class ConfigurationProviderBootLoader implements PluginBootLoaderInterface
         if ($applicationConfig instanceof ApplicationConfigurationFactoryInterface) {
             $applicationConfig = $applicationConfig->create();
         }
-        /**
-         * @psalm-suppress PossiblyInvalidPropertyAssignmentValue
-         *
-         * @phpstan-ignore-next-line
-         */
+
+        /** @var ApplicationConfigurationInterface $applicationConfig */
         $this->applicationConfiguration = $applicationConfig;
     }
 
@@ -60,9 +57,6 @@ class ConfigurationProviderBootLoader implements PluginBootLoaderInterface
         );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     protected function createPluginConfigurationClassResolver(): PluginConfigurationClassResolver
     {
         return new PluginConfigurationClassResolver($this->applicationConfiguration);

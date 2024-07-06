@@ -13,9 +13,6 @@ namespace Micro\Framework\BootConfiguration\Configuration\Resolver;
 
 class PluginNameShortResolver implements PluginConfigurationClassResolverInterface
 {
-    /**
-     * {@inheritDoc}
-     */
     public function resolve(string $pluginClass): string
     {
         return $pluginClass.'Config';
